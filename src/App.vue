@@ -1,8 +1,3 @@
-<template>
-  <div class="app">
-    zxd
-  </div>
-</template>
 <script>
 export default {
   created () {
