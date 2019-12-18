@@ -1,78 +1,104 @@
 <template>
-  <div @click="clickHandle">
-
+  <div class="app">
+    <canvas class="firstCanvas" style="width: 300px; height: 200px;" canvas-id="firstCanvas"></canvas>
     <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
       </div>
     </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
+    <div>{{num}}</div>
+    <div @click="handlePlus()">加号+</div>
+    <div @click="goCount()">去counter页</div>
+    <rich-text :nodes="nodes"></rich-text>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+import card from "@/components/card";
 
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello miniprograme',
+      num: 1,
+      motto: "Hello miniprograme",
       userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      }
-    }
+        nickName: "mpvue",
+        avatarUrl: "http://mpvue.com/assets/logo.png"
+      },
+      nodes:
+        "<p><span style='color:#f00'>哈哈哈哈我是红色</span><span style='color:#00f'>嘿嘿嘿嘿我是蓝色</span></p>"
+    };
   },
-
   components: {
     card
   },
-
+  onReady: function(e) {},
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
+    handlePlus() {
+      this.num++;
+    },
+    goCount() {
+      const url = "../counter/main";
+      mpvue.navigateTo({ url });
+    },
+    bindViewTap() {
+      const url = "../logs/main";
+      if (mpvuePlatform === "wx") {
+        mpvue.switchTab({ url });
       } else {
-        mpvue.navigateTo({ url })
+        mpvue.navigateTo({ url });
       }
     },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
+    clickHandle(ev) {
+      console.log("clickHandle:", ev);
       // throw {message: 'custom test'}
     }
   },
-
-  created () {
+  canvasOptions: {
+    canvasId: "firstCanvas"
+  },
+  renderCanvas(h) {
+    return h("view", [
+      h("image", {
+        props: {
+          src:
+            "https://pic.u51.com/sfs-gateway/api/v1/download/5f7dac8228354008ae6f69f67c1c0fa410d6"
+        },
+        style: {
+          left: 10,
+          top: 10,
+          width: 100,
+          height: 100,
+          fill: "#000",
+          fontSize: 18
+        }
+      }),
+      h(
+        "text",
+        {
+          style: {
+            left: 120,
+            top: 100,
+            fill: "#f00",
+            fontSize: 18,
+            width: 150,
+            ellipse: true
+          }
+        },
+        "hello mpvue!"
+      )
+    ]);
+  },
+  created(e) {
     // let app = getApp()
   }
-}
+};
 </script>
 
 <style scoped>
+.firstCanvas {
+  background: #fee;
+}
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -100,27 +126,27 @@ export default {
   margin-bottom: 5px;
   border: 1px solid #ccc;
 }
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
+.all {
+  width: 7.5rem;
+  height: 1rem;
+  background-color: blue;
 }
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
+.all:after {
+  display: block;
+  content: "";
+  clear: both;
 }
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
+.left {
+  float: left;
+  width: 3rem;
+  height: 1rem;
+  background-color: red;
 }
 
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
+.right {
+  float: left;
+  width: 4.5rem;
+  height: 1rem;
+  background-color: green;
 }
 </style>
